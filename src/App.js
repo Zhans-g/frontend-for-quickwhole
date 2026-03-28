@@ -14,7 +14,7 @@ function App() {
 
   // Загрузка товаров
   const fetchProducts = () => {
-    axios.get('http://localhost:5001/api/products')
+    axios.get('https://backend-for-quickwhole.onrender.com/api/products')
       .then(res => setProducts(res.data))
       .catch(err => console.error("Ошибка загрузки товаров:", err));
   };
@@ -77,7 +77,7 @@ function App() {
         userId: user ? (user._id || user.id) : null 
       };
 
-      const res = await axios.post('http://localhost:5001/api/orders', orderData);
+      const res = await axios.post('https://backend-for-quickwhole.onrender.com/api/orders', orderData);
       
       if (res.data.url) {
         window.open(res.data.url, '_blank');

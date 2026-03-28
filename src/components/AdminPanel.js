@@ -19,7 +19,7 @@ function AdminPanel({ isOpen, onClose, onProductAdded }) {
       }
     };
 
-    await axios.post('http://localhost:5001/api/products', formData, config);
+    await axios.post('https://backend-for-quickwhole.onrender.com/api/products', formData, config);
     
     alert("Товар успешно добавлен!");
     onProductAdded(); 

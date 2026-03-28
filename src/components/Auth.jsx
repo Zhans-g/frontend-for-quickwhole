@@ -10,8 +10,8 @@ const Auth = ({ isOpen, onClose, onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = isLogin 
-      ? 'http://localhost:5001/api/auth/login' 
-      : 'http://localhost:5001/api/auth/register';
+      ? 'https://backend-for-quickwhole.onrender.com/api/auth/login' 
+      : 'https://backend-for-quickwhole.onrender.com/api/auth/register';
 
     try {
       const res = await axios.post(url, formData);
