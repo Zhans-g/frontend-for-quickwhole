@@ -80,21 +80,34 @@ function App() {
   const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   const checkoutWhatsApp = async () => {
-    if (cart.length === 0) return alert("Корзина пуста!");
-    try {
-      const orderData = {
-        cartItems: cart,
-        totalPrice: totalPrice,
-        city: "Almaty",
-        customerName: user ? user.username : "Гость",
-        userId: user ? (user._id || user.id) : null 
-      };
-      const res = await axios.post('https://backend-for-quickwhole.onrender.com/api/orders', orderData);
-      if (res.data.url) window.open(res.data.url, '_blank');
-    } catch (err) {
-      alert("Ошибка оформления заказа.");
+  if (cart.length === 0) return alert("Корзина пуста!");
+
+  // 1. Создаем индикатор загрузки, чтобы пользователь понимал, что процесс идет
+  const btn = document.querySelector('button[style*="background: rgb(37, 211, 102)"]');
+  if (btn) btn.innerText = "Оформление...";
+
+  try {
+    const orderData = {
+      cartItems: cart,
+      totalPrice: totalPrice,
+      city: "Almaty",
+      customerName: user ? user.username : "Гость",
+      userId: user ? (user._id || user.id) : null 
+    };
+
+    const res = await axios.post('https://backend-for-quickwhole.onrender.com/api/orders', orderData);
+    
+    if (res.data.url) {
+      // 2. Вместо window.open пробуем window.location.href, это надежнее для мобилок
+      window.location.href = res.data.url; 
     }
-  };
+  } catch (err) {
+    console.error("Ошибка:", err.response?.data || err.message);
+    alert("Ошибка связи с сервером. Попробуйте еще раз через минуту.");
+  } finally {
+    if (btn) btn.innerText = "Заказать в WhatsApp";
+  }
+};
 
   return (
     <div style={styles.appWrapper}>
